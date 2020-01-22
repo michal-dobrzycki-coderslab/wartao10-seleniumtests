@@ -19,13 +19,26 @@ public class KatalonFormularz {
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
+    public String getFieldData(WebElement element) {
+        return (String.format("Element posiada tag: %s", element.getTagName()));
+    }
+
     @Test
     public void testKatalonFormularz() throws Exception {
+        String imie = "Jan";
+
         driver.get("https://katalon-test.s3.amazonaws.com/demo-aut/dist/html/form.html");
 
         WebElement firstName = driver.findElement(By.id("first-name"));
-        firstName.clear();
-        firstName.sendKeys("Jan");
+        if (firstName.isEnabled()) {
+            firstName.clear();
+            firstName.sendKeys(imie);
+            System.out.println(getFieldData(firstName));
+        } else {
+            Assert.fail();
+        }
+
+
 
         WebElement lastName = driver.findElement(By.id("last-name"));
         lastName.clear();
